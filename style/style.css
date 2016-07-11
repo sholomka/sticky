@@ -1,0 +1,23 @@
+body {
+    height: 2000px;
+    margin:0;
+}
+
+.placeholder {
+    height: 200px;
+    width: 100%;
+}
+
+.bar {
+    width:600px;
+    height: 50px;
+    margin: auto;
+    background-color:#333333;
+}
+
+.sticky {
+    position: fixed;
+}
+.stop {
+    position: relative;
+}
