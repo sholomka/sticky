@@ -1,1 +1,80 @@
-!function(t){function e(o){if(n[o])return n[o].exports;var i=n[o]={exports:{},id:o,loaded:!1};return t[o].call(i.exports,i,i.exports,e),i.loaded=!0,i.exports}var n={};return e.m=t,e.c=n,e.p="./js",e(0)}([function(t,e){"use strict";function n(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}var o=function i(){var t=this;n(this,i),this.container=document.querySelector(".container"),this.sticky=document.querySelectorAll(".bar"),Array.prototype.forEach.call(this.sticky,function(e,n){var o=null,i=0;window.addEventListener("scroll",function(){if(null==o){for(var r=getComputedStyle(e,""),d="",s=0,l=r.length;s<l;s++)0!=r[s].indexOf("overflow")&&0!=r[s].indexOf("padding")&&0!=r[s].indexOf("border")&&0!=r[s].indexOf("outline")&&0!=r[s].indexOf("box-shadow")&&0!=r[s].indexOf("background")||(d+=r[s]+": "+r.getPropertyValue(r[s])+"; ");o=document.createElement("div"),o.style.cssText=d+" box-sizing: border-box; width: "+e.offsetWidth+"px;",e.insertBefore(o,e.firstChild);for(var c=1,a=e.childNodes.length;c<a;c++)o.appendChild(e.childNodes[1]);e.style.height=o.getBoundingClientRect().height+"px",e.style.padding="0",e.style.border="0"}var u=e.getBoundingClientRect(),p=void 0,f=u.top+o.getBoundingClientRect().height;p=void 0!=t.sticky[n+1]?Math.round(f-t.sticky[n+1].getBoundingClientRect().top+5):Math.round(f-t.container.getBoundingClientRect().bottom+parseFloat(getComputedStyle(t.container,"").paddingBottom.slice(0,-2))),u.top-i<=0?u.top-i<=p?(o.className="stop",o.style.top=-p+"px"):(o.className="sticky",o.style.top=i+"px"):(o.className="stop",o.style.top="0"),window.addEventListener("resize",function(){e.children[0].style.width=getComputedStyle(e,"").width},!1)},!1)})};new o}]);
+let App = React.createClass({
+    componentDidMount: function() {
+        let container = document.querySelector('.container'),
+            sticky = document.querySelectorAll('.bar');
+
+        Array.prototype.forEach.call(sticky, (item, index) => {
+            let div = null,
+                position = 0;
+
+            window.addEventListener('scroll', () => {
+                if (div == null) {
+                    let stickyStyles = getComputedStyle(item, ''), divStyles = '';
+
+                    for (let i = 0, count = stickyStyles.length; i < count; i++) {
+                        if (stickyStyles[i].indexOf('overflow') == 0 || 
+                            stickyStyles[i].indexOf('height') == 0 ||
+                            stickyStyles[i].indexOf('padding') == 0 ||
+                            stickyStyles[i].indexOf('border') == 0 ||
+                            stickyStyles[i].indexOf('outline') == 0 ||
+                            stickyStyles[i].indexOf('box-shadow') == 0 ||
+                            stickyStyles[i].indexOf('background') == 0) {
+                                divStyles += stickyStyles[i] + ': ' +stickyStyles.getPropertyValue(stickyStyles[i]) + '; '
+                        }
+                    }
+
+                    div = document.createElement('div');
+                    div.style.cssText = divStyles + ' box-sizing: border-box; width: ' + item.offsetWidth + 'px;';
+                    item.appendChild(div);
+                    item.style.height = div.getBoundingClientRect().height + 'px';
+                    item.style.padding = '0';
+                    item.style.border = '0';
+                }
+
+                let coords = item.getBoundingClientRect(),
+                    distance,
+                    coordsHeight = coords.top + div.getBoundingClientRect().height;
+
+                if (sticky[index+1] != undefined) {
+                    distance = Math.round(coordsHeight - sticky[index+1].getBoundingClientRect().top + 5);
+                } else {
+                    distance = Math.round(coordsHeight - container.getBoundingClientRect().bottom + parseFloat(getComputedStyle(container, '').paddingBottom.slice(0, -2)));
+                }
+
+                if ((coords.top - position) <= 0) {
+                    if ((coords.top - position) <= distance) {
+                        div.className = 'relative';
+                        div.style.top = - distance +'px';
+                    } else {
+                        div.className = 'sticky';
+                        div.style.top = position + 'px';
+                    }
+                } else {
+                    div.className = 'relative';
+                    div.style.top = '0';
+                }
+                window.addEventListener('resize', function() {
+                    item.children[0].style.width = getComputedStyle(item, '').width
+                }, false);
+            });
+        });
+    },
+
+    render: () => (
+        <div className="container">
+            <div className="placeholder"></div>
+            <div className="bar"></div>
+            <div className="placeholder"></div>
+            <div className="bar"></div>
+            <div className="placeholder"></div>
+            <div className="placeholder"></div>
+            <div className="placeholder"></div>
+            <div className="placeholder"></div>
+        </div>
+    )
+});
+
+ReactDOM.render(
+    <App/>,
+    document.getElementById('root')
+);
